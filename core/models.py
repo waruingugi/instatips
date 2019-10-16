@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
 
+# Start server using commands:
+# sudo service postgresql start
+# sudo -u postgres psql
+
 
 # Create your models here.
 class Match(models.Model):
@@ -21,6 +25,10 @@ class Match(models.Model):
     goalsHomeTeam = models.IntegerField()
     goalsAwayTeam = models.IntegerField()
     score = JSONField()
+    events = JSONField()
+    lineups = JSONField()
+    statistics = JSONField()
+    players = JSONField()
 
     class Meta:
         ordering = ['-event_date']
@@ -30,18 +38,13 @@ class Match(models.Model):
         return "%s vs %s" % (self.homeTeam['name'], self.awayTeam['name'])
 
 
-# Additional Match Details.
-class MatchDetails(Match):
-    events = JSONField()
-    lineups = JSONField()
-    statistics = JSONField()
-    players = JSONField()
-
-
 class Countries(models.Model):
     country = models.CharField(max_length=50)
     code = models.CharField(max_length=10)
     flag = models.URLField()
+
+    class Meta:
+        ordering = ['Country']
 
     def __str__(self):
         return self.country
@@ -60,6 +63,9 @@ class CountryTeam(models.Model):
     venue_address = models.CharField(max_length=50)
     venue_city = models.CharField(max_length=50)
     venue_capacity = models.IntegerField()
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name
