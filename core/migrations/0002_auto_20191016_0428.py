@@ -79,4 +79,7 @@ class Migration(migrations.Migration):
             ],
             bases=('core.match',),
         ),
+        migrations.DeleteModel(
+            name='MatchDetails',
+        ),
     ]

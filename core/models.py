@@ -8,7 +8,7 @@ from django.contrib.postgres.fields import JSONField
 
 # Create your models here.
 class Match(models.Model):
-    fixture_id = models.IntegerField()
+    fixture_id = models.IntegerField(unique=True)
     league_id = models.IntegerField()
     event_date = models.DateTimeField(null=True)
     event_timestamp = models.DateTimeField(null=True)
@@ -24,11 +24,11 @@ class Match(models.Model):
     awayTeam = JSONField()
     goalsHomeTeam = models.IntegerField()
     goalsAwayTeam = models.IntegerField()
-    score = JSONField()
-    events = JSONField()
-    lineups = JSONField()
-    statistics = JSONField()
-    players = JSONField()
+    score = JSONField(null=True)
+    events = JSONField(null=True)
+    lineups = JSONField(null=True)
+    statistics = JSONField(null=True)
+    players = JSONField(null=True)
 
     class Meta:
         ordering = ['-event_date']
@@ -44,7 +44,7 @@ class Countries(models.Model):
     flag = models.URLField()
 
     class Meta:
-        ordering = ['Country']
+        ordering = ['country']
 
     def __str__(self):
         return self.country
