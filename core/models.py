@@ -14,7 +14,7 @@ class Match(models.Model):
     event_timestamp = models.DateTimeField(null=True)
     firstHalfStart = models.DateTimeField()
     secondHalfStart = models.DateTimeField()
-    roundSeason = models.CharField(max_length=50)
+    roundSeason = models.CharField("Round",max_length=50)
     status = models.CharField(max_length=50)
     statusShort = models.CharField(max_length=50)
     elapsed = models.IntegerField()
@@ -69,3 +69,31 @@ class CountryTeam(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# List all leagues
+class Leagues(models.Model):
+    league_id = models.IntegerField()
+    name = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
+    country_code = models.CharField(max_length=10)
+    season = models.IntegerField() # YYYY
+    season_start = models.CharField(max_length=50) # YYYY-MM-DD
+    season_end = models.CharField(max_lenght=50) # YYYY-MM-DD
+    logo = models.URLField()
+    flag = models.URLField()
+    standings = models.IntegerField()
+    is_current = models.IntegerField()
+
+    class Meta:
+        ordering = ['league_id']
+
+    def __str__(self):
+        return self.name
+
+    def get_max_league_id(self):
+        """
+        Get the latest league id e.g if league id's are 1,2,3 
+        then return 3 as the highest league id.
+        """
+        return Leagues.objects.all().aggregate(Max('league_id'))
