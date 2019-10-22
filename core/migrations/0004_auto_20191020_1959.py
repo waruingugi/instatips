@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50)),
                 ('country', models.CharField(max_length=50)),
                 ('country_code', models.CharField(max_length=10)),
-                ('season', models.IntegerField()),
+                ('season', models.DateTimeField()),
                 ('season_start', models.CharField(max_length=50)),
                 ('season_end', models.CharField(max_length=50)),
                 ('logo', models.URLField()),

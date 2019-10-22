@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
-from django.db.models import Max
+from core.managers import CustomManager
 
 import datetime
 import re
+import json
 from django.utils import timezone
+from dateutil.parser import parse
 
 # Start server using commands:
 # >> sudo service postgresql start
@@ -15,15 +17,17 @@ from django.utils import timezone
 
 # Create your models here.
 class Match(models.Model):
+    objects = CustomManager()
+
     fixture_id = models.IntegerField(unique=True)
     league_id = models.IntegerField()
     event_date = models.DateTimeField(null=True)
     event_timestamp = models.DateTimeField(null=True)
     firstHalfStart = models.DateTimeField(null=True)
     secondHalfStart = models.DateTimeField(null=True)
-    roundSeason = models.CharField("Round", max_length=50)
+    roundSeason = models.CharField("round", max_length=50)
     status = models.CharField(max_length=50)
-    statusShort = models.CharField(max_length=50)
+    statusShort = models.CharField(max_length=10)
     elapsed = models.IntegerField()
     venue = models.CharField(max_length=50)
     referee = models.CharField(max_length=50, null=True)  # noqa
@@ -38,11 +42,14 @@ class Match(models.Model):
     players = JSONField(null=True)
 
     class Meta:
-        ordering = ['-event_date']
+        ordering = ['event_date']
         verbose_name_plural = ['Matches']
 
     def __str__(self):
-        return "%s vs %s" % (self.homeTeam['name'], self.awayTeam['name'])
+        return "%s vs %s" % (
+            json.loads(self.homeTeam)['team_name'],
+            json.loads(self.awayTeam)['team_name']
+        )
 
     def save(self, *args, **kwargs):
         """
@@ -64,6 +71,7 @@ class Match(models.Model):
         super().save(*args, **kwargs)
 
 
+# List all countries
 class Countries(models.Model):
     country = models.CharField(max_length=50)
     code = models.CharField(max_length=10)
@@ -99,27 +107,37 @@ class CountryTeam(models.Model):
 
 # List all leagues
 class Leagues(models.Model):
-    league_id = models.IntegerField()
+    objects = CustomManager()
+
+    league_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
-    country_code = models.CharField(max_length=10)
-    season = models.IntegerField()  # YYYY
-    season_start = models.CharField(max_length=50)  # YYYY-MM-DD
-    season_end = models.CharField(max_length=50)  # YYYY-MM-DD
+    country_code = models.CharField(max_length=10, null=True)  # noqa
+    season = models.DateTimeField()  # YYYY
+    season_start = models.DateTimeField()  # YYYY-MM-DD
+    season_end = models.DateTimeField()  # YYYY-MM-DD
     logo = models.URLField()
-    flag = models.URLField()
-    standings = models.IntegerField()
-    is_current = models.IntegerField()
-
-    class Meta:
-        ordering = ['league_id']
+    flag = models.URLField(null=True)  # noqa
+    standings = models.BooleanField()
+    is_current = models.BooleanField()
 
     def __str__(self):
         return self.name
 
-    def get_max_league_id(self):
+    def save(self, *args, **kwargs):
         """
-        Get the latest league id e.g if league id's are 1,2,3
-        then return 3 as the highest league id.
+        Performs date_time conversions that allow string data to be saved in fields.
         """
-        return Leagues.objects.all().aggregate(Max('league_id'))
+        self.season = timezone.get_current_timezone().localize(
+            parse(str(self.season))
+        )
+        self.season_start = timezone.get_current_timezone().localize(
+            parse(self.season_start)
+        )
+        self.season_end = timezone.get_current_timezone().localize(
+            parse(self.season_end)
+        )
+        self.standings = bool(self.standings)
+        self.is_current = bool(self.is_current)
+
+        super().save(*args, **kwargs)
