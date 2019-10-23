@@ -1,7 +1,7 @@
 from django.test import TestCase
 from core.models import Leagues
 from datetime import datetime
-from core.tests.test_data import leagues_data
+from .test_data import leagues_data
 
 
 # Create tests here

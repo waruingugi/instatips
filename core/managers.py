@@ -15,8 +15,13 @@ class CustomManager(models.Manager):
         >> return super(models.Manager,self).bulk_create(objs,**kwargs)
         """
         for obj in objs:
-            obj.save()
-        return objs
+            obj.field_conversions()
+        return super().bulk_create(objs, **kwargs)
+
+    def bulk_update(self, objs, **kwargs):
+        for obj in objs:
+            obj.field_conversions()
+        return super().bulk_update(objs, **kwargs)
 
     def get_max_league_id(self):
         """

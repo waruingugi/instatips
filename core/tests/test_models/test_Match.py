@@ -2,7 +2,7 @@ from django.test import TestCase
 from core.models import Match
 import json
 
-from core.tests.test_data import fixture_id_443_events_data as fixture_events_data
+from .test_data import fixture_id_443_events_data as fixture_events_data
 from django.utils import timezone
 import datetime
 
@@ -31,30 +31,24 @@ class MatchModelTest(TestCase):
             elapsed=90,
             venue="Tottenham Hotspur Stadium",
             referee=None,
-            homeTeam=json.dumps(
-                {
+            homeTeam={
                     "team_id": 47,
                     "team_name": "Tottenham",
                     "logo": "https://media.api-football.com/teams/47.png"
-                }
-            ),
-            awayTeam=json.dumps(
-                {
+                },
+            awayTeam={
                     "team_id": 45,
                     "team_name": "Everton",
                     "logo": "https://media.api-football.com/teams/45.png"
-                }
-            ),
+                },
             goalsHomeTeam=2,
             goalsAwayTeam=2,
-            score=json.dumps(
-                {
+            score={
                     "halftime": "1-0",
                     "fulltime": "2-2",
                     "extratime": None,
                     "penalty": None,
                 }
-            )
         )
 
     def test_fixture_label(self):
