@@ -130,7 +130,7 @@ class Leagues(models.Model):
     season = models.DateTimeField()  # YYYY
     season_start = models.DateTimeField()  # YYYY-MM-DD
     season_end = models.DateTimeField()  # YYYY-MM-DD
-    logo = models.URLField()
+    logo = models.URLField(null=True)  # noqa
     flag = models.URLField(null=True)  # noqa
     standings = models.BooleanField()
     is_current = models.BooleanField()
