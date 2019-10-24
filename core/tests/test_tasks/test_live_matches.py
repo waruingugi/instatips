@@ -1,18 +1,16 @@
 # from django.test import TestCase
-from datetime import datetime
 from core import settings as core_settings
 import requests
 from core.models import Match
 
 
-# Uncomment line below to test functionality
-# class GetTodayMatchesTest(TestCase):
-class GetTodayMatchesTest():
+# ----------------------------------------------------------------------
+# ----------------------------------------------------------------------
+# class GetLiveMatchesTest(TestCase):
+class GetLiveMatchesTest():
     @classmethod
     def setUpTestData(cls):
-        today = datetime.now().strftime('%Y-%m-%d')
-
-        url = core_settings.API_URL + core_settings.FIXTURE_DATE_URL + today
+        url = core_settings.API_URL + core_settings.LIVE_FIXTURES_URL
         response = requests.request(
             core_settings.HTTP_GET_METHOD,
             url,
@@ -24,24 +22,22 @@ class GetTodayMatchesTest():
 
         matches_list = Match.objects.values_list('fixture_id', flat=True)
         new_matches_list = []
-        existing_matches_list = []
+        # existing_matches_list = []
+        new_pending_list = []
 
         for fixture in fixtures:
-            if fixture['fixture_id'] in matches_list:
-                existing_matches_list.append(fixture)
-            else:
-                new_matches_list.append(fixture)
-
-        if existing_matches_list:
-            match_instance_list = [
-                Match(
-                    fixture_id=fixture['fixture_id'],
+            if (
+                (fixture['fixture_id'] in matches_list) and
+                (fixture['fixture_id'] in core_settings.INCLUDED_LEAGUES)
+            ):
+                # existing_matches_list.append(fixture)
+                Match.objects.filter(fixture_id=fixture['fixture_id']).update(
                     league_id=fixture['league_id'],
                     event_date=fixture['event_date'],
                     event_timestamp=fixture['event_timestamp'],
                     firstHalfStart=fixture['firstHalfStart'],
                     secondHalfStart=fixture['secondHalfStart'],
-                    round=fixture['round'],
+                    roundSeason=fixture['round'],
                     status=fixture['status'],
                     statusShort=fixture['statusShort'],
                     elapsed=fixture['elapsed'],
@@ -52,12 +48,128 @@ class GetTodayMatchesTest():
                     goalsHomeTeam=fixture['goalsHomeTeam'],
                     goalsAwayTeam=fixture['goalsAwayTeam'],
                     score=fixture['score']
+                )
+
+            elif (
+                (fixture['fixture_id'] not in matches_list) and
+                (fixture['fixture_id'] in core_settings.INCLUDED_LEAGUES)
+            ):
+                new_matches_list.append(fixture)
+
+            elif (
+                (fixture['fixture_id'] in matches_list) and
+                (fixture['fixture_id'] not in core_settings.INCLUDED_LEAGUES)
+            ):
+                # existing_pending_list.append(fixture)
+                Match.objects.filter(fixture_id=fixture['fixture_id']).update(
+                    league_id=fixture['league_id'],
+                    event_date=fixture['event_date'],
+                    event_timestamp=fixture['event_timestamp'],
+                    firstHalfStart=fixture['firstHalfStart'],
+                    secondHalfStart=fixture['secondHalfStart'],
+                    roundSeason=fixture['round'],
+                    status=fixture['status'],
+                    statusShort=fixture['statusShort'],
+                    elapsed=fixture['elapsed'],
+                    venue=fixture['venue'],
+                    referee=fixture['referee'],
+                    homeTeam=fixture['homeTeam'],
+                    awayTeam=fixture['awayTeam'],
+                    goalsHomeTeam=fixture['goalsHomeTeam'],
+                    goalsAwayTeam=fixture['goalsAwayTeam'],
+                    score=fixture['score']
+                )
+            else:
+                new_pending_list.append(fixture)
+        # 1.
+        """
+        if existing_matches_list:
+            detailed_existing_matches_list = []
+            for fixture in existing_matches_list:
+                url = core_settings.API_URL + core_settings.FIXTURE_URL + fixture['fixture_id']
+                response = requests.request(
+                    core_settings.HTTP_GET_METHOD,
+                    url,
+                    headers=core_settings.HEADERS,
+                    params=core_settings.QUERY_STRING
+                )
+
+                live_fixture = response.json()['api']['fixtures'][0]
+                detailed_existing_matches_list.append(live_fixture)
+
+            match_instance_list = [
+                Match(
+                    fixture_id=fixture['fixture_id'],
+                    league_id=fixture['league_id'],
+                    event_date=fixture['event_date'],
+                    event_timestamp=fixture['event_timestamp'],
+                    firstHalfStart=fixture['firstHalfStart'],
+                    secondHalfStart=fixture['secondHalfStart'],
+                    roundSeason=fixture['round'],
+                    status=fixture['status'],
+                    statusShort=fixture['statusShort'],
+                    elapsed=fixture['elapsed'],
+                    venue=fixture['venue'],
+                    referee=fixture['referee'],
+                    homeTeam=fixture['homeTeam'],
+                    awayTeam=fixture['awayTeam'],
+                    goalsHomeTeam=fixture['goalsHomeTeam'],
+                    goalsAwayTeam=fixture['goalsAwayTeam'],
+                    score=fixture['score'],
+                    events=fixture['events'],
+                    lineups=fixture['lineups'],
+                    statistics=fixture['statistics'],
+                    players=fixture['players']
                     )
-                for fixture in fixtures
+                for fixture in detailed_existing_matches_list
             ]
             Match.objects.bulk_update(match_instance_list)
-
+        """
+        # 2.
         if new_matches_list:
+            detailed_new_matches_list = []
+            for fixture in new_matches_list:
+                url = core_settings.API_URL + core_settings.FIXTURE_URL + fixture['fixture_id']
+                response = requests.request(
+                    core_settings.HTTP_GET_METHOD,
+                    url,
+                    headers=core_settings.HEADERS,
+                    params=core_settings.QUERY_STRING
+                )
+
+                live_fixture = response.json()['api']['fixtures'][0]
+                detailed_new_matches_list.append(live_fixture)
+
+            match_instance_list = [
+                Match(
+                    fixture_id=fixture['fixture_id'],
+                    league_id=fixture['league_id'],
+                    event_date=fixture['event_date'],
+                    event_timestamp=fixture['event_timestamp'],
+                    firstHalfStart=fixture['firstHalfStart'],
+                    secondHalfStart=fixture['secondHalfStart'],
+                    roundSeason=fixture['round'],
+                    status=fixture['status'],
+                    statusShort=fixture['statusShort'],
+                    elapsed=fixture['elapsed'],
+                    venue=fixture['venue'],
+                    referee=fixture['referee'],
+                    homeTeam=fixture['homeTeam'],
+                    awayTeam=fixture['awayTeam'],
+                    goalsHomeTeam=fixture['goalsHomeTeam'],
+                    goalsAwayTeam=fixture['goalsAwayTeam'],
+                    score=fixture['score'],
+                    events=fixture['events'],
+                    lineups=fixture['lineups'],
+                    statistics=fixture['statistics'],
+                    players=fixture['players']
+                    )
+                for fixture in detailed_new_matches_list
+            ]
+            Match.objects.bulk_create(match_instance_list)
+        # 3.
+        """
+        if existing_pending_list:
             match_instance_list = [
                 Match(
                     fixture_id=fixture['fixture_id'],
@@ -78,11 +190,79 @@ class GetTodayMatchesTest():
                     goalsAwayTeam=fixture['goalsAwayTeam'],
                     score=fixture['score']
                     )
-                for fixture in fixtures
+                for fixture in existing_pending_list
             ]
-
+            Match.objects.bulk_update(match_instance_list)
+        """
+        # 4.
+        if new_pending_list:
+            match_instance_list = [
+                Match(
+                    fixture_id=fixture['fixture_id'],
+                    league_id=fixture['league_id'],
+                    event_date=fixture['event_date'],
+                    event_timestamp=fixture['event_timestamp'],
+                    firstHalfStart=fixture['firstHalfStart'],
+                    secondHalfStart=fixture['secondHalfStart'],
+                    roundSeason=fixture['round'],
+                    status=fixture['status'],
+                    statusShort=fixture['statusShort'],
+                    elapsed=fixture['elapsed'],
+                    venue=fixture['venue'],
+                    referee=fixture['referee'],
+                    homeTeam=fixture['homeTeam'],
+                    awayTeam=fixture['awayTeam'],
+                    goalsHomeTeam=fixture['goalsHomeTeam'],
+                    goalsAwayTeam=fixture['goalsAwayTeam'],
+                    score=fixture['score']
+                    )
+                for fixture in new_pending_list
+            ]
             Match.objects.bulk_create(match_instance_list)
 
     def test_get_max_league_id_method(self):
-        result = Match.objects.get_max_league_id()
-        self.assertEqual(result['league_id__max'], 2)
+        url = core_settings.API_URL + core_settings.LIVE_FIXTURES_URL
+        response = requests.request(
+            core_settings.HTTP_GET_METHOD,
+            url,
+            headers=core_settings.HEADERS,
+            params=core_settings.QUERY_STRING
+        )
+
+        fixtures = response.json()['api']['fixtures']
+
+        matches_list = Match.objects.values_list('fixture_id', flat=True)
+        existing_pending_list = []
+
+        for fixture in fixtures:
+            if (
+                    (fixture['fixture_id'] in matches_list) and
+                    (fixture['fixture_id'] not in core_settings.INCLUDED_LEAGUES)
+            ):
+                existing_pending_list.append(fixture)
+
+        if existing_pending_list:
+            for fixture in existing_pending_list:
+                match = Match.objects.get(fixture_id=fixture['fixture_id'])
+                match.league_id = fixture['league_id']
+                match.event_date = fixture['event_date']
+                match.event_timestamp = fixture['event_timestamp']
+                match.firstHalfStart = fixture['firstHalfStart']
+                match.secondHalfStart = fixture['secondHalfStart']
+                match.roundSeason = fixture['round']
+                match.status = fixture['status']
+                match.statusShort = fixture['statusShort']
+                match.elapsed = fixture['elapsed']
+                match.venue = fixture['venue']
+                match.referee = fixture['referee']
+                match.homeTeam = fixture['homeTeam']
+                match.awayTeam = fixture['awayTeam']
+                match.goalsHomeTeam = fixture['goalsHomeTeam']
+                match.goalsAwayTeam = fixture['goalsAwayTeam']
+                match.score = fixture['score']
+
+                match.save()
+
+        match.refresh_from_db()
+
+        self.assertEqual(1, 2)

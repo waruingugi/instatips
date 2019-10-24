@@ -7,7 +7,11 @@ HEADERS = {
     }
 
 FIXTURE_DATE_URL = 'fixtures/date/'
+LIVE_FIXTURES_URL = 'fixtures/live'
+FIXTURE_URL = 'fixtures/id/'
 
 QUERY_STRING = {'timezone': 'Africa/Nairobi'}
+INCLUDED_LEAGUES = []
+
 
 HTTP_GET_METHOD = 'GET'

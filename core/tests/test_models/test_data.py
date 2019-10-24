@@ -135,3 +135,31 @@ leagues_data = [
         1, 1
     )
 ]
+
+countries_data = [
+    {
+        'country': 'Albania',
+        'code': 'AL',
+        'flag': 'https://www.api-football.com/public/flags/al.svg'
+    },
+    {
+        'country': 'Algeria',
+        'code': 'DZ',
+        'flag': 'https://www.api-football.com/public/flags/dz.svg'
+    },
+    {
+        'country': 'Thailand',
+        'code': 'TH',
+        'flag': 'https://www.api-football.com/public/flags/th.svg'
+    },
+    {
+        'country': 'World',
+        'code': None,
+        'flag': None
+    },
+    {
+        'country': 'Zambia',
+        'code': 'ZM',
+        'flag': 'https://media.api-football.com/flags/zm.svg'
+    }
+]

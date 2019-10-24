@@ -18,11 +18,6 @@ class CustomManager(models.Manager):
             obj.field_conversions()
         return super().bulk_create(objs, **kwargs)
 
-    def bulk_update(self, objs, **kwargs):
-        for obj in objs:
-            obj.field_conversions()
-        return super().bulk_update(objs, **kwargs)
-
     def get_max_league_id(self):
         """
         Get the latest league id e.g if league id's are 1,2,3

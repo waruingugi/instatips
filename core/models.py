@@ -56,7 +56,6 @@ class Match(models.Model):
         Calls field_conversions before save.
         """
         self.field_conversions()
-
         super().save(*args, **kwargs)
 
     def field_conversions(self):
@@ -89,8 +88,8 @@ class Match(models.Model):
 # List all countries
 class Countries(models.Model):
     country = models.CharField(max_length=100)
-    code = models.CharField(max_length=10)
-    flag = models.URLField()
+    code = models.CharField(max_length=10, null=True)  # noqa
+    flag = models.URLField(null=True)  # noqa
 
     class Meta:
         ordering = ['country']
@@ -144,7 +143,6 @@ class Leagues(models.Model):
         Calls field_conversions before save.
         """
         self.field_conversions()
-
         super().save(*args, **kwargs)
 
     def field_conversions(self):
