@@ -1,6 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
-from core.models import Countries
+from core.models import Countries, Leagues
 from core import settings as core_settings
 from core.func_response_data import response_data
 
@@ -44,3 +44,41 @@ def countries():
                 for country in new_countries_list
             ]
             Countries.objects.bulk_create(countries_instance_list)
+
+
+@shared_task(name="get_leagues_from_api")
+def leagues():
+    data = None
+    try:
+        data = response_data(url_path=core_settings.LEAGUES_URL).json()
+    except Exception:
+        """Should implement django logging here."""
+        print("An error occurred in leagues task!!")
+    else:
+        # Those already existing in League model
+        existing_leagues = Leagues.objects.values_list('league_id', flat=True)
+        leagues = data['api']['leagues']
+        new_leagues_list = []
+
+        for league in leagues:
+            if league['league_id'] not in existing_leagues:
+                new_leagues_list.append(league)
+
+        if new_leagues_list:
+            leagues_instance_list = [
+                Leagues(
+                    league_id=league['league_id'],
+                    name=league['name'],
+                    country=league['country'],
+                    country_code=league['country_code'],
+                    season=league['season'],
+                    season_start=league['season_start'],
+                    season_end=league['season_end'],
+                    logo=league['logo'],
+                    flag=league['flag'],
+                    standings=league['standings'],
+                    is_current=league['is_current']
+                )
+                for league in new_leagues_list
+            ]
+            Leagues.objects.bulk_create(leagues_instance_list)

@@ -70,7 +70,15 @@ app.conf.beat_schedule = {
         'task': 'get_countries_from_api',
 
         # execute on the first day of each month
-        # 'schedule': crontab(0, 0, day_of_month='1')
-        'schedule': crontab()
+        'schedule': crontab(0, 0, day_of_month='1')
+    },
+    # name of the scheduler
+
+    'get-leagues-from-api': {
+        # task name which we have created in tasks.py
+        'task': 'get_leagues_from_api',
+
+        # execute each day at midnight
+        'schedule': crontab(minute=0, hour=0)
     }
 }
