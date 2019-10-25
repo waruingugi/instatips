@@ -1,6 +1,6 @@
 # Commands related to celery
 # $src/redis-server
-# $redis-cli ping (This command should return pong)
+# $src/redis-cli ping (This command should return pong)
 # $celery -A instatips worker -l info
 # $celery -A instatips beat -l info
 # $python manage.py shell

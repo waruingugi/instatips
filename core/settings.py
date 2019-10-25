@@ -9,9 +9,15 @@ HEADERS = {
 FIXTURE_DATE_URL = 'fixtures/date/'
 LIVE_FIXTURES_URL = 'fixtures/live'
 FIXTURE_URL = 'fixtures/id/'
+LEAGUES_URL = 'leagues'
 
 QUERY_STRING = {'timezone': 'Africa/Nairobi'}
 INCLUDED_LEAGUES = []
 
 
 HTTP_GET_METHOD = 'GET'
+
+SERVER_SIDE_ERROR_CODES = [
+    501, 502, 503, 504, 505, 506,
+    507, 508, 510, 511, 500, 521, 522,
+]

@@ -4,8 +4,13 @@ from core import settings as core_settings
 import requests
 from core.models import Match
 
+"""
+This is a test that make a live requests to the API.
+Be careful and watch for API quota usage!
+Uncomment line below to run test.
+"""
 
-# Uncomment line below to test functionality
+
 # class GetTodayMatchesTest(TestCase):
 class GetTodayMatchesTest():
     @classmethod
@@ -62,34 +67,30 @@ class GetTodayMatchesTest():
 
         matches_list = Match.objects.values_list('fixture_id', flat=True)
         new_matches_list = []
-        existing_matches_list = []
 
         for fixture in fixtures:
             if fixture['fixture_id'] in matches_list:
-                existing_matches_list.append(fixture)
+                match = Match.objects.get(fixture_id=fixture['fixture_id'])
+                match.league_id = fixture['league_id']
+                match.event_date = fixture['event_date']
+                match.event_timestamp = fixture['event_timestamp']
+                match.firstHalfStart = fixture['firstHalfStart']
+                match.secondHalfStart = fixture['secondHalfStart']
+                match.roundSeason = fixture['round']
+                match.status = fixture['status']
+                match.statusShort = fixture['statusShort']
+                match.elapsed = fixture['elapsed']
+                match.venue = fixture['venue']
+                match.referee = fixture['referee']
+                match.homeTeam = fixture['homeTeam']
+                match.awayTeam = fixture['awayTeam']
+                match.goalsHomeTeam = fixture['goalsHomeTeam']
+                match.goalsAwayTeam = fixture['goalsAwayTeam']
+                match.score = fixture['score']
+
+                match.save()
             else:
                 new_matches_list.append(fixture)
-
-        if existing_matches_list:
-            for fixture in existing_matches_list:
-                Match.objects.filter(fixture_id=fixture['fixture_id']).update(
-                        league_id=fixture['league_id'],
-                        event_date=fixture['event_date'],
-                        event_timestamp=fixture['event_timestamp'],
-                        firstHalfStart=fixture['firstHalfStart'],
-                        secondHalfStart=fixture['secondHalfStart'],
-                        roundSeason=fixture['round'],
-                        status=fixture['status'],
-                        statusShort=fixture['statusShort'],
-                        elapsed=fixture['elapsed'],
-                        venue=fixture['venue'],
-                        referee=fixture['referee'],
-                        homeTeam=fixture['homeTeam'],
-                        awayTeam=fixture['awayTeam'],
-                        goalsHomeTeam=fixture['goalsHomeTeam'],
-                        goalsAwayTeam=fixture['goalsAwayTeam'],
-                        score=fixture['score']
-                    )
 
         if new_matches_list:
             match_instance_list = [
@@ -118,5 +119,5 @@ class GetTodayMatchesTest():
             Match.objects.bulk_create(match_instance_list)
 
         Match.objects.refresh_from_db()
-        result = Match.objects.get_max_league_id()
-        self.assertNotEqual(result['league_id__max'], 2)
+
+        # Should test match model is updated
