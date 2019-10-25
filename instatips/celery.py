@@ -80,5 +80,14 @@ app.conf.beat_schedule = {
 
         # execute each day at midnight
         'schedule': crontab(minute=0, hour=0)
+    },
+    # name of the scheduler
+
+    "get-today-matches-from-api": {
+        # task name which we have created in tasks.py
+        'task': 'get_today_matches_from_api',
+
+        # execute every two hours 
+        'schedule': crontab(minute=0, hour='*/2')
     }
 }

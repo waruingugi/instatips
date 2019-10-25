@@ -89,6 +89,7 @@ class GetTodayMatchesTest():
                 match.score = fixture['score']
 
                 match.save()
+                # match.refresh_from_db
             else:
                 new_matches_list.append(fixture)
 
@@ -117,7 +118,5 @@ class GetTodayMatchesTest():
             ]
 
             Match.objects.bulk_create(match_instance_list)
-
-        Match.objects.refresh_from_db()
 
         # Should test match model is updated
