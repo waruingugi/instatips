@@ -10,6 +10,7 @@ FIXTURE_DATE_URL = 'fixtures/date/'
 LIVE_FIXTURES_URL = 'fixtures/live'
 FIXTURE_URL = 'fixtures/id/'
 LEAGUES_URL = 'leagues'
+COUNTRIES_URL = 'countries'
 
 QUERY_STRING = {'timezone': 'Africa/Nairobi'}
 INCLUDED_LEAGUES = []

@@ -11,6 +11,7 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
+from celery.schedules import crontab
 
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'instatips.settings')
@@ -62,4 +63,14 @@ app.conf.beat_schedule = {
 
         'args': ("DjangoPY", )
     },
+    # name of the scheduler
+
+    'get-countries-from-api-once-a-month': {
+        # task name which we have created in tasks.py
+        'task': 'get_countries_from_api',
+
+        # execute on the first day of each month
+        # 'schedule': crontab(0, 0, day_of_month='1')
+        'schedule': crontab()
+    }
 }

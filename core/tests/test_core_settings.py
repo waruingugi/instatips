@@ -27,3 +27,23 @@ class CoreSettingsTest(TestCase):
         fixture_date = 'https://api-football-v1.p.rapidapi.com/v2/fixtures/date/'
         url = core_settings.API_URL + core_settings.FIXTURE_DATE_URL
         self.assertEqual(url, fixture_date)
+
+    def test_live_fixtures_url(self):
+        live_fixture = 'https://api-football-v1.p.rapidapi.com/v2/fixtures/live'
+        url = core_settings.API_URL + core_settings.LIVE_FIXTURES_URL
+        self.assertEqual(url, live_fixture)
+
+    def test_fixture_url(self):
+        fixture_url = 'https://api-football-v1.p.rapidapi.com/v2/fixtures/id/'
+        url = core_settings.API_URL + core_settings.FIXTURE_URL
+        self.assertEqual(url, fixture_url)
+
+    def test_leagues_url(self):
+        leagues_url = 'https://api-football-v1.p.rapidapi.com/v2/leagues'
+        url = core_settings.API_URL + core_settings.LEAGUES_URL
+        self.assertEqual(url, leagues_url)
+
+    def test_countries_url(self):
+        countries_url = 'https://api-football-v1.p.rapidapi.com/v2/countries'
+        url = core_settings.API_URL + core_settings.COUNTRIES_URL
+        self.assertEqual(url, countries_url)
