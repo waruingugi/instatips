@@ -12,7 +12,7 @@ Watch out for api quota usage
 
 
 class FuncResponseDataTest(TestCase):
-# class FuncResponseDataTest():
+    # class FuncResponseDataTest():
     def test_leagues_request(self):
         data = None
         try:
@@ -34,7 +34,7 @@ class FuncResponseDataTest(TestCase):
             """
             pass
         self.assertNotEqual(data['api']['results'], 0)
-    
+
     def test_today_request(self):
         data = None
         try:

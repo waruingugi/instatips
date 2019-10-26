@@ -5,6 +5,7 @@ from core.models import Match
 
 
 """
+THIS CODE HAS BEEN FOUND TO BE FAULTY, PLEASE REVIEW!!!
 This is a test that make a live requests to the API.
 Be careful and watch for API quota usage!
 Uncomment line below to run test.
@@ -64,7 +65,7 @@ class GetLiveMatchesTest():
                 (fixture['fixture_id'] in matches_list) and
                 (fixture['fixture_id'] not in core_settings.INCLUDED_LEAGUES)
             ):
-                match = Match.objects.get(fixture['fixture_id'])
+                match = Match.objects.get(fixture_id=fixture['fixture_id'])
                 match.league_id = fixture['league_id']
                 match.event_date = fixture['event_date']
                 match.event_timestamp = fixture['event_timestamp']
