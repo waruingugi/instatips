@@ -8,6 +8,9 @@
 # >> PeriodicTask.objects.update(last_run_at=None)
 # $python manage.py migrate
 
+# After creating cache
+# >> python manage.py createcachetable
+
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery

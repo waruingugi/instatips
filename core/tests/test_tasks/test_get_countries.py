@@ -25,7 +25,7 @@ class GetCountriesTest(TestCase):
             17
         )
 
-    def test_new_countries_code(self):
+    def test_new_countries_creation_in_model(self):
         new_countries = new_countries_data
         countries_list = Countries.objects.values_list('country', flat=True)
         new_countries_list = []

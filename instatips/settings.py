@@ -135,3 +135,15 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = "Africa/Nairobi"
 
 timezone = 'Africa/Nairobi'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+        "TIMEOUT": 7200,  # SET TO TWO HOURS: LONGEST CONTRAB TASK
+        "OPTIONS": {
+            "MAX_ENTRIES": 10,
+            "CULL_FREQUENCY": 6,
+        }
+    }
+}

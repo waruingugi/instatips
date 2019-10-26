@@ -102,10 +102,10 @@ class Countries(models.Model):
 class CountryTeam(models.Model):
     team_id = models.IntegerField()
     name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=10, null=True)  # noqa
     logo = models.URLField()
-    country = models.CharField(max_length=100)
-    founded = models.IntegerField()
+    country = models.CharField(max_length=100, null=True)  # noqa
+    founded = models.IntegerField(null=True)
     venue_name = models.CharField(max_length=100, null=True)  # noqa
     venue_surface = models.CharField(max_length=100, null=True)  # noqa
     venue_address = models.CharField(max_length=100, null=True)  # noqa

@@ -163,3 +163,10 @@ countries_data = [
         'flag': 'https://media.api-football.com/flags/zm.svg'
     }
 ]
+
+country_teams_data = [
+    {'team_id': 2471, 'name': 'Western Stima', 'code': None, 'logo': 'https://media.api-football.com/teams/2471.png', 'country': 'Kenya', 'founded': 1999, 'venue_name': 'Moi Stadium', 'venue_surface': 'artificial turf', 'venue_address': 'Ondiek Highway', 'venue_city': 'Kisumu', 'venue_capacity': 5000},
+    {'team_id': 1511, 'name': 'Kenya', 'code': None, 'logo': 'https://media.api-football.com/teams/1511.png', 'country': 'Kenya', 'founded': 1960, 'venue_name': 'Nyayo National Stadium', 'venue_surface': 'grass', 'venue_address': 'Langata Road / Mombasa Road', 'venue_city': 'Nairobi', 'venue_capacity': 30000},
+    {'team_id': 2468, 'name': 'Kariobangi Sharks', 'code': None, 'logo': 'https://media.api-football.com/teams/2468.png', 'country': 'Kenya', 'founded': None, 'venue_name': 'Moi International Sports Centre', 'venue_surface': 'grass', 'venue_address': 'A2 Street, Kasarani', 'venue_city': 'Nairobi', 'venue_capacity': 60000},
+    {'team_id': 2479, 'name': 'Thika United', 'code': None, 'logo': 'https://media.api-football.com/teams/2479.png', 'country': 'Kenya', 'founded': 1999, 'venue_name': 'Thika Municipal Stadium', 'venue_surface': 'grass', 'venue_address': 'Kenyatta Highway', 'venue_city': 'Thika', 'venue_capacity': 1200}
+]
