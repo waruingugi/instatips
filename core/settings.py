@@ -13,8 +13,12 @@ LEAGUES_URL = 'leagues'
 COUNTRIES_URL = 'countries'
 
 QUERY_STRING = {'timezone': 'Africa/Nairobi'}
-INCLUDED_LEAGUES = []
+timezone = 'Africa/Nairobi'
 
+EUROPE_TZ = 'Europe/London'
+AFRICA_TZ = 'Africa/Nairobi'
+
+INCLUDED_LEAGUES = []
 
 HTTP_GET_METHOD = 'GET'
 

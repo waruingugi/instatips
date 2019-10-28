@@ -5,14 +5,18 @@ from core.managers import CustomManager
 import datetime
 import re
 import json
-from django.utils import timezone
 from dateutil.parser import parse
+from django.utils.timezone import make_aware
+
 
 # Start server using commands:
 # >> sudo service postgresql start
 # >> sudo -u postgres psql
 # Other commands are:
 # >> ALTER USER instatips_admin CREATEDB;
+
+# >>> from django.db import connection
+# >>> connection.queries
 
 
 # Create your models here.
@@ -42,7 +46,7 @@ class Match(models.Model):
     players = JSONField(null=True)
 
     class Meta:
-        ordering = ['event_date']
+        ordering = ['-event_timestamp']
         verbose_name_plural = ['Matches']
 
     def __str__(self):
@@ -64,20 +68,20 @@ class Match(models.Model):
         """
         # if statements ensure no conversions are done on null values
         if self.event_date:
-            self.event_date = timezone.get_current_timezone().localize(
+            self.event_date = make_aware(
                 datetime.datetime(
                 *map(int, re.split('[^\d]', self.event_date)[:-1]))  # noqa
             )
         if self.event_timestamp:
-            self.event_timestamp = timezone.get_current_timezone().localize(
+            self.event_timestamp = make_aware(
                 datetime.datetime.fromtimestamp(self.event_timestamp)
             )
         if self.firstHalfStart:
-            self.firstHalfStart = timezone.get_current_timezone().localize(
+            self.firstHalfStart = make_aware(
                 datetime.datetime.fromtimestamp(self.firstHalfStart)
             )
         if self.secondHalfStart:
-            self.secondHalfStart = timezone.get_current_timezone().localize(
+            self.secondHalfStart = make_aware(
                 datetime.datetime.fromtimestamp(self.secondHalfStart)
             )
         self.homeTeam = json.dumps(self.homeTeam)
@@ -149,14 +153,8 @@ class Leagues(models.Model):
         """
         Performs date_time conversions that allow string data to be saved in fields.
         """
-        self.season = timezone.get_current_timezone().localize(
-            parse(str(self.season))
-        )
-        self.season_start = timezone.get_current_timezone().localize(
-            parse(self.season_start)
-        )
-        self.season_end = timezone.get_current_timezone().localize(
-            parse(self.season_end)
-        )
+        self.season = parse(str(self.season))
+        self.season_start = parse(self.season_start)
+        self.season_end = parse(self.season_end)
         self.standings = bool(self.standings)
         self.is_current = bool(self.is_current)

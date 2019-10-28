@@ -3,8 +3,6 @@ from core.models import Match
 import json
 
 from .test_data import fixture_id_443_events_data as fixture_events_data
-from django.utils import timezone
-import datetime
 
 # To list the test successes as well as failures:
 # >> python manage.py test --verbosity 2
@@ -102,17 +100,24 @@ class MatchModelTest(TestCase):
 
     def test_event_time_stamp_field(self):
         match = Match.objects.first()
-        event_timestamp = timezone.get_current_timezone().localize(
-            datetime.datetime.fromtimestamp(1557669600)
+        self.assertEqual(
+            match.event_timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            '2019-05-12 17:00:00'
         )
-        self.assertEqual(match.event_timestamp, event_timestamp)
+
+    def test_event_date_field(self):
+        match = Match.objects.first()
+        self.assertEqual(
+            match.event_date.strftime('%Y-%m-%d %H:%M:%S'),
+            '2019-05-12 14:00:00'
+        )
 
     def test_secondHalfStart_field(self):
         match = Match.objects.first()
-        secondHalfStart = timezone.get_current_timezone().localize(
-            datetime.datetime.fromtimestamp(1557673200)
+        self.assertEqual(
+            match.secondHalfStart.strftime('%Y-%m-%d %H:%M:%S'),
+            '2019-05-12 18:00:00'
         )
-        self.assertEqual(match.secondHalfStart, secondHalfStart)
 
     def test_get_max_league_id_method(self):
         result = Match.objects.get_max_league_id()
