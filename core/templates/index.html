@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+{% include 'header.html' %}
+    <section id="dates-link-section">
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex justify-content-center"><a href="#" class="date-link">Yesterday</a></div>
+                <div class="col d-flex justify-content-center"><a href="#" class="date-link active">Today</a></div>
+                <div class="col d-flex justify-content-center"><a href="#" class="date-link">Tomorrow</a></div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                
+
+                <!-- -->
+                {% load custom_tags %}
+                {% for match in matches %}
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                    <a href="{{ match.get_absolute_url }}" id="match-data-link">
+                        <div class="d-flex flex-row match-data">
+                            <div class="d-flex flex-column" id="date">
+                                <span id="day">{{ match.event_timestamp.hour|hour_format}}:</span>
+                                <span id="month">{{ match.event_timestamp.minute|minutes_format }}</span>
+                            </div>
+                            <div class="d-flex flex-column" id="match">
+                                <div class="d-flex flex-column" id="team">
+                                    <span id="home-team">{{ match.homeTeam|json_loader:"team_name"|truncatechars:20}}</span>
+                                    <span id="away-team">{{ match.awayTeam|json_loader:"team_name" |truncatechars:20}}</span>
+                                    {% if match.elapsed != 0 %}
+                                        <div class="progress game-progress-bar">
+                                            <div class="progress-bar" aria-valuenow='{{match.elapsed|elapsed_percentage}}' aria-valuemin="0" aria-valuemax="100" style="width: {{match.elapsed|elapsed_percentage}}%;">
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column" id="scores">
+                                <span id="home-team-score">{{ match.goalsHomeTeam|goals_format }}</span>
+                                <span id="away-team-score">{{ match.goalsAwayTeam|goals_format }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </section>
+{% include 'footer.html' %}
+{% endblock %}

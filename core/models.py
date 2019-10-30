@@ -7,6 +7,7 @@ import re
 import json
 from dateutil.parser import parse
 from django.utils.timezone import make_aware
+from django.urls import reverse
 
 
 # Start server using commands:
@@ -46,7 +47,7 @@ class Match(models.Model):
     players = JSONField(null=True)
 
     class Meta:
-        ordering = ['-event_timestamp']
+        ordering = ['event_timestamp']
         verbose_name_plural = ['Matches']
 
     def __str__(self):
@@ -54,6 +55,9 @@ class Match(models.Model):
             json.loads(self.homeTeam)['team_name'],
             json.loads(self.awayTeam)['team_name']
         )
+
+    def get_absolute_url(self):
+        return reverse('home')
 
     def save(self, *args, **kwargs):
         """

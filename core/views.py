@@ -11,19 +11,17 @@ from core import settings as core_settings
 class MatchListView(generic.ListView):
     model = Match
     context_object_name = 'matches'
-    paginate_by = 25
+    template_name = 'index.html'
+    paginate_by = 24  # number divisible by 3 because of column-4* in large devices
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_queryset(self):
+        """Override queryset to get only today's matches."""
         all_matches = cache.get('all_matches_query')
 
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
 
-        """
-        Get a all today matches.
-        """
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
         """Set time range from 00:00hrs to 23:59hrs."""
@@ -31,5 +29,4 @@ class MatchListView(generic.ListView):
         today = datetime(dt_now.year, dt_now.month, dt_now.day, tzinfo=timezone)
 
         today_matches = all_matches.filter(event_date__range=(today, tomorrow_start))
-        context['all_matches'] = today_matches
-        return context
+        return today_matches

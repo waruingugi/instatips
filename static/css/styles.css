@@ -1,0 +1,102 @@
+#header {
+  padding:5px;
+}
+
+#custom-navbar {
+  background-color:#0b0b30;
+  border-radius:5px;
+}
+
+#menu-icon {
+  font-size:24px;
+  color:#ffffff;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+  color:#5EDFFF !important;
+}
+
+body {
+  font-family:'Montserrat';
+  font-size:16px;
+}
+
+.date-link {
+  color:rgb(11, 11, 48);
+  font-size:17px;
+}
+
+.date-link.active, .date-link:hover {
+  text-decoration:solid;
+  transform:scale(1.1);
+  color:#00bbff;
+}
+
+#date {
+  width:17%;
+  height:100%;
+  text-align:center;
+  border-right:1px solid grey;
+  margin:5px 5px;
+}
+
+#day {
+  height:80%;
+  width:100%;
+  font-size:20px;
+  font-weight:normal;
+  font-style:normal;
+}
+
+#month {
+  height:20%;
+  width:100%;
+  font-size:14px;
+  font-weight:normal;
+}
+
+#match {
+  width:65%;
+  height:100%;
+}
+
+#match-data-link {
+  text-decoration:none;
+  color:#0b0b30;
+  font-size:18px;
+}
+
+.progress.game-progress-bar {
+  height:2px;
+}
+
+#scores {
+  width:18%;
+  height:100%;
+  text-align:center;
+}
+
+#away-team-score, #away-team-score {
+  height:50%;
+}
+
+.match-data {
+  border:2px solid #1a1a70;
+  border-radius:5px;
+  margin:5px auto;
+}
+
+.match-data:hover {
+  border:2px solid #3030cf;
+  border-radius:5px;
+  margin:5px auto;
+  color:#3030cf;
+}
+
+#simple-footer {
+  background-color:#0b0b30;
+  color:rgb(255,255,255);
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
