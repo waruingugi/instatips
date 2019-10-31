@@ -12,7 +12,7 @@ class MatchListView(generic.ListView):
     model = Match
     context_object_name = 'matches'
     template_name = 'index.html'
-    paginate_by = 24  # number divisible by 3 because of column-4* in large devices
+    paginate_by = 27  # number divisible by 3 because of column-4* in large devices
 
     def get_queryset(self):
         """Override queryset to get only today's matches."""

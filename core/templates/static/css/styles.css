@@ -67,7 +67,7 @@ body {
 }
 
 .progress.game-progress-bar {
-  height:2px;
+  height: 2px;
 }
 
 #scores {
@@ -98,5 +98,22 @@ body {
   color:rgb(255,255,255);
   padding-top:10px;
   padding-bottom:10px;
+
 }
 
+.tooltip-inner {
+  background-color: #0b0b30 !important;
+  color: #5EDFFF !important;
+}
+.tooltip.bs-tooltip-right .arrow:before {
+  border-right-color: #0b0b30 !important;
+}
+.tooltip.bs-tooltip-left .arrow:before {
+  border-left-color: #0b0b30 !important;
+}
+.tooltip.bs-tooltip-bottom .arrow:before {
+  border-bottom-color: #0b0b30 !important;
+}
+.tooltip.bs-tooltip-top .arrow:before {
+  border-top-color: #0b0b30 !important;
+}

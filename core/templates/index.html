@@ -21,13 +21,13 @@
     <section id="content">
         <div class="container">
             <div class="row">
-                
 
                 <!-- -->
                 {% load custom_tags %}
                 {% for match in matches %}
                 <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                    <a href="{{ match.get_absolute_url }}" id="match-data-link">
+                    <a href="javascript:void(0)" id="match-data-link" data-toggle="tooltip" 
+                            data-placement="top" title="This match has been postponed">
                         <div class="d-flex flex-row match-data">
                             <div class="d-flex flex-column" id="date">
                                 <span id="day">{{ match.event_timestamp.hour|hour_format}}:</span>
@@ -55,11 +55,38 @@
                 {% endfor %}
                 
             </div>
+
             <div class="row">
                 <div class="col">
                     <hr>
                 </div>
             </div>
+            
+            {% if is_paginated %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+
+            
         </div>
     </section>
 {% include 'footer.html' %}
