@@ -12,3 +12,16 @@ for (var i = 0; i < links.length; i++) {
     
   });
 }
+
+// Fix bug where navbar does not close on click.
+var navbar = document.querySelector("button.navbar-toggler");
+
+navbar.addEventListener("click", function(){
+  var navbar_dropdown = document.getElementById("navcol-1");
+
+  if (navbar_dropdown.style.display == 'none') {
+    navbar_dropdown.style.display = 'block';
+  } else {
+    navbar_dropdown.style.display = 'none';
+  }
+});

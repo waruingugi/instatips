@@ -8,11 +8,11 @@ from core import settings as core_settings
 
 
 # Create your views here.
-class MatchListView(generic.ListView):
+class TodayListView(generic.ListView):
     model = Match
     context_object_name = 'matches'
     template_name = 'index.html'
-    paginate_by = 27  # number divisible by 3 because of column-4* in large devices
+    paginate_by = 39  # number divisible by 3 because of column-4* in large devices
 
     def get_queryset(self):
         """Override queryset to get only today's matches."""
