@@ -59,10 +59,10 @@ def status_or_hour(status, time, elapsed):
         result = str(elapsed) + "'"
 
     elif status in other_match_status:
-        result = status
+        result = status[:3]  # Limit to three strings because of display issues
 
     elif time < datetime.now() and status == 'NS':
-        result = status
+        result = status[:3]  # Limit to three strings because of display issues
 
     else:
         if int(hour) < 10:
@@ -101,3 +101,23 @@ def minute_or_timestamp(status, time):
         result = minutes
 
     return result
+
+
+@register.filter(name='pagination_limit')
+def pagination_range(obj, current, limit=5):
+    """
+    Used with pagination page_range object when you have a lot of pages
+    Limits the range of pages shown.
+    Courtesy of Leon Smith: https://gist.github.com/leonsmith/5501345
+    """
+    left = (limit / 2)
+    right = limit / 2
+    # total = len(obj)
+
+    if limit % 2 == 0:
+        right -= 1
+
+    if current < left:
+        return obj[:limit]
+
+    return obj[int(current-left):int(current+right)]

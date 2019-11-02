@@ -1,11 +1,15 @@
 from django.test import TestCase # noqa
 from core.models import Countries, Leagues, Match
-from core.tasks import countries, leagues, live_matches, today_matches
+from datetime import datetime, timedelta
+from core.tasks import (
+    countries, leagues, live_matches,
+    today_matches, tomorrow_matches
+)
 
 
 # Create tests here
-# class TaskTest(TestCase):
-class TaskTest():
+class TaskTest(TestCase):
+    # class TaskTest():
     def test_countries_task(self):
         countries()
         self.assertNotEqual(
@@ -22,9 +26,19 @@ class TaskTest():
 
     def test_today_matches_task(self):
         today_matches()
-        self.assertNotEqual(
-            Match.objects.all().count(),
-            0
+        match = Match.objects.first()
+        self.assertEquals(
+            match.event_timestamp.strftime('%Y-%m-%d'),
+            datetime.now().strftime('%Y-%m-%d')
+        )
+
+    def test_tomorrow_matches_task(self):
+        tomorrow_matches()
+        match = Match.objects.first()
+        tomorrow = datetime.now() + timedelta(1)
+        self.assertEquals(
+            match.event_timestamp.strftime('%Y-%m-%d'),
+            tomorrow.strftime('%Y-%m-%d')
         )
 
     def test_live_matches_task(self):
