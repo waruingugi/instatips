@@ -8,8 +8,8 @@ from core.tasks import (
 
 
 # Create tests here
-class TaskTest(TestCase):
-    # class TaskTest():
+# class TaskTest(TestCase):
+class TaskTest():
     def test_countries_task(self):
         countries()
         self.assertNotEqual(

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+{% include 'header.html' %}
+    <section id="dates-link-section">
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex justify-content-center"><a href="{% url 'live-matches' %}" class="date-link active">Live</a></div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                {% load custom_tags %}
+
+                {% if matches %}
+                    {% for match in matches %}
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        {% if match.statusShort|link_function  %}
+                            <a href="{{ match.get_absolute_url }}" id="match-data-link">
+                        {% else %}
+                            <a href="javascript:void(0)" id="match-data-link" data-toggle="tooltip" 
+                                data-placement="top" title="{{ match.status }}">
+                        {% endif %}
+                            <div class="d-flex flex-row match-data">
+                                <div class="d-flex flex-column" id="date">
+                    
+                                    <span id="day">{% status_or_hour match.statusShort match.event_timestamp match.elapsed %}</span>
+                                    <span id="month">{{ match.statusShort|minute_or_timestamp:match.event_timestamp }}</span>
+    
+                                </div>
+                                <div class="d-flex flex-column" id="match">
+                                    <div class="d-flex flex-column" id="team">
+                                        <span id="home-team">{{ match.homeTeam|json_loader:"team_name"|truncatechars:18}}</span>
+                                        <span id="away-team">{{ match.awayTeam|json_loader:"team_name" |truncatechars:18}}</span>
+                                        {% if match.elapsed != 0 %}
+                                            <div class="progress game-progress-bar">
+                                                <div class="progress-bar" aria-valuenow='{{match.elapsed|elapsed_percentage}}' aria-valuemin="0" aria-valuemax="100" style="width: {{match.elapsed|elapsed_percentage}}%;">
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column" id="scores">
+                                    <span id="home-team-score">{{ match.goalsHomeTeam|goals_format }}</span>
+                                    <span id="away-team-score">{{ match.goalsAwayTeam|goals_format }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col">
+                        <p class="text-center" style="padding-bottom: 68vh;">There are no live matches today</p>
+                    </div>
+                {% endif %}
+                
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <hr>
+                </div>
+            </div>
+            
+            {% if is_paginated %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+                        {% endif %}
+                        {% for i in paginator.page_range|pagination_limit:page_obj.number %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link" href="#">{{ i }} <span class="sr-only">(current)</span></a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+
+            
+        </div>
+    </section>
+
+{% endblock %}
