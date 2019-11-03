@@ -372,3 +372,69 @@ def tomorrow_matches():
             ]
 
             Match.objects.bulk_create(match_instance_list)
+
+
+@shared_task(name="get_day_after_tomorrow_matches_from_api")
+def day_after_tomorrow_matches():
+    data = None
+    try:
+        tomorrow_timestamp = datetime.now() + timedelta(2)
+        tomorrow = tomorrow_timestamp.strftime('%Y-%m-%d')
+        data = response_data(url_path=core_settings.FIXTURE_DATE_URL + tomorrow).json()
+    except Exception:
+        """Should implement django logging here."""
+        print("An error occurred in today matches task!!")
+    else:
+        matches_list = Match.objects.values_list('fixture_id', flat=True)
+        fixtures = data['api']['fixtures']
+        new_matches_list = []
+
+        for fixture in fixtures:
+            if fixture['fixture_id'] in matches_list:
+                match = Match.objects.get(fixture_id=fixture['fixture_id'])
+                match.league_id = fixture['league_id']
+                match.event_date = fixture['event_date']
+                match.event_timestamp = fixture['event_timestamp']
+                match.firstHalfStart = fixture['firstHalfStart']
+                match.secondHalfStart = fixture['secondHalfStart']
+                match.roundSeason = fixture['round']
+                match.status = fixture['status']
+                match.statusShort = fixture['statusShort']
+                match.elapsed = fixture['elapsed']
+                match.venue = fixture['venue']
+                match.referee = fixture['referee']
+                match.homeTeam = fixture['homeTeam']
+                match.awayTeam = fixture['awayTeam']
+                match.goalsHomeTeam = fixture['goalsHomeTeam']
+                match.goalsAwayTeam = fixture['goalsAwayTeam']
+                match.score = fixture['score']
+
+                match.save()
+            else:
+                new_matches_list.append(fixture)
+
+        if new_matches_list:
+            match_instance_list = [
+                Match(
+                    fixture_id=fixture['fixture_id'],
+                    league_id=fixture['league_id'],
+                    event_date=fixture['event_date'],
+                    event_timestamp=fixture['event_timestamp'],
+                    firstHalfStart=fixture['firstHalfStart'],
+                    secondHalfStart=fixture['secondHalfStart'],
+                    roundSeason=fixture['round'],
+                    status=fixture['status'],
+                    statusShort=fixture['statusShort'],
+                    elapsed=fixture['elapsed'],
+                    venue=fixture['venue'],
+                    referee=fixture['referee'],
+                    homeTeam=fixture['homeTeam'],
+                    awayTeam=fixture['awayTeam'],
+                    goalsHomeTeam=fixture['goalsHomeTeam'],
+                    goalsAwayTeam=fixture['goalsAwayTeam'],
+                    score=fixture['score']
+                    )
+                for fixture in new_matches_list
+            ]
+
+            Match.objects.bulk_create(match_instance_list)

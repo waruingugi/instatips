@@ -121,3 +121,41 @@ def pagination_range(obj, current, limit=5):
         return obj[:limit]
 
     return obj[int(current-left):int(current+right)]
+
+
+@register.simple_tag(name='status_or_date')
+def status_or_date(time):
+    """
+    Returns hour-start-time or elapsed of the match only if
+    the match has no abnormality.
+    """
+    result = None
+    hour = time.hour
+    if time.date() == datetime.now().date():
+        if int(hour) < 10:
+            hour = "0" + str(hour)
+        result = str(hour) + ":"
+    else:
+        if int(time.day) < 10:
+            day = "0" + str(time.day)
+        result = day
+    return result
+
+
+@register.simple_tag(name='minute_or_date')
+def minute_or_date(time):
+    """
+    Returns hour-start-time or elapsed of the match only if
+    the match has no abnormality.
+    """
+    result = None
+    minutes = time.minute
+
+    if int(minutes) < 10:
+        minutes = "0" + str(minutes)
+
+    if time.date() == datetime.now().date():
+        result = minutes
+    else:
+        result = time.strftime('%B')[:3]
+    return result

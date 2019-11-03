@@ -148,3 +148,63 @@ class LeagueListView(generic.ListView):
             cache.set('all_leagues_query', all_leagues)
 
         return all_leagues
+
+
+class HighlightsListView(generic.ListView):
+    model = Match
+    context_object_name = 'matches'
+    template_name = 'highlights.html'
+    paginate_by = 39  # number divisible by 3 because of column-4* in large devices
+
+    def get_queryset(self):
+        """Get all leagues from cache."""
+        all_leagues = cache.get('all_leagues_query')
+        all_matches = cache.get('all_matches_query')
+
+        if all_leagues is None:
+            all_leagues = Leagues.objects.all()
+            cache.set('all_leagues_query', all_leagues)
+
+        if all_matches is None:
+            all_matches = Match.objects.all()
+            cache.set('all_matches_query', all_matches)
+
+        timezone = pytz.timezone(core_settings.timezone)
+        dt_now = datetime.now(timezone)
+        yesterday_start = datetime(dt_now.year, dt_now.month, dt_now.day, tzinfo=timezone) - timedelta(1)
+
+        dt_ten_hrs_ago = datetime(
+            dt_now.year, dt_now.month, dt_now.day,
+            dt_now.hour, dt_now.minute
+        ) - timedelta(hours=10)
+
+        random_matches = cache.get('random_matches')
+
+        if random_matches is None:
+            current_leagues = all_leagues.filter(
+                    Q(season_end__gte=yesterday_start)
+                )
+            random_leagues = ['Champions League', 'Premier League']
+            league_ids = []
+
+            for league in current_leagues:
+                if league.name in random_leagues:
+                    league_ids.append(league.id)
+
+            random_matches = all_matches.filter(
+                    Q(event_timestamp__gte=yesterday_start) & Q(league_id__in=league_ids)
+                )
+            cache.set('random_matches', random_matches)
+        
+        upcoming_matches = []
+        finished_matches = []
+
+        for match in random_matches:
+            if match.event_timestamp > dt_ten_hrs_ago:
+                upcoming_matches.append(match)
+            else:
+                finished_matches.append(match)
+
+        ordered_matches = upcoming_matches + finished_matches
+
+        return random_matches

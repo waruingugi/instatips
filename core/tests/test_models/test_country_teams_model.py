@@ -1,6 +1,7 @@
 from django.test import TestCase
 from core.models import CountryTeam
 from .test_data import country_teams_data
+from django.core.cache import cache
 
 
 class CountryTeamModelTest(TestCase):
@@ -27,3 +28,6 @@ class CountryTeamModelTest(TestCase):
     def test_string_representation(self):
         country_team = CountryTeam.objects.first()
         self.assertEqual(str(country_team), 'Kariobangi Sharks')
+
+    def test_country_teams_model_cache(self):
+        self.assertNotEquals(cache.get('all_country_teams_query'), None)

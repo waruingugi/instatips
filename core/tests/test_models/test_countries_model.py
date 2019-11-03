@@ -1,6 +1,7 @@
 from django.test import TestCase
 from core.models import Countries
 from .test_data import countries_data
+from django.core.cache import cache
 
 
 class CountriesModelTest(TestCase):
@@ -104,3 +105,6 @@ class CountriesModelTest(TestCase):
             updated_country.code,
             'AL_false'
         )
+
+    def test_country_model_cache(self):
+        self.assertNotEquals(cache.get('all_countries_query'), None)

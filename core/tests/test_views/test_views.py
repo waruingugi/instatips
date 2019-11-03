@@ -74,3 +74,21 @@ class LiveListViewTest(TestCase):
     def test_live_view_is_paginated(self):
         response = self.client.get(reverse('live-matches'))
         self.assertTrue('is_paginated' in response.context)
+
+
+class HighlightsListViewTest(TestCase):
+    def test_highlights_view_url_exists_at_desired_location(self):
+        response = self.client.get('/highlights/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_highlights_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('match-highlights'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_highlights_view_uses_correct_template(self):
+        response = self.client.get(reverse('match-highlights'))
+        self.assertTemplateUsed(response, 'highlights.html')
+
+    def test_highlights_view_is_paginated(self):
+        response = self.client.get(reverse('match-highlights'))
+        self.assertTrue('is_paginated' in response.context)

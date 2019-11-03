@@ -1,7 +1,7 @@
 from django.test import TestCase
 from core.models import Match
 import json
-
+from django.core.cache import cache
 from .test_data import fixture_id_443_events_data as fixture_events_data
 
 # To list the test successes as well as failures:
@@ -122,3 +122,9 @@ class MatchModelTest(TestCase):
     def test_get_max_league_id_method(self):
         result = Match.objects.get_max_league_id()
         self.assertEqual(result['league_id__max'], 2)
+
+    def test_random_matches_cache(self):
+        self.assertEqual(cache.get('random_matches'), None)
+
+    def test_match_model_cache(self):
+        self.assertNotEquals(cache.get('all_matches_query'), None)

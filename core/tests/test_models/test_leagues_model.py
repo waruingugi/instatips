@@ -2,6 +2,7 @@ from django.test import TestCase
 from core.models import Leagues
 from datetime import datetime
 from .test_data import leagues_data
+from django.core.cache import cache
 
 
 # Create tests here
@@ -55,6 +56,9 @@ class LeaguesModelTest(TestCase):
     def test_is_current_field(self):
         league = Leagues.objects.first()
         self.assertEqual(league.is_current, True)
+
+    def test_league_model_cache(self):
+        self.assertNotEquals(cache.get('all_leagues_query'), None)
 
 
 class LeaguesModelBulkCreateTest(TestCase):

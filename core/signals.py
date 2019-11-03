@@ -24,6 +24,13 @@ def match_model_cache(sender, instance, **kwargs):
     cache.set('all_matches_query', all_matches_query)
 
 
+@receiver([post_save, post_delete], sender=Match)
+def random_matches_cache(sender, instance, **kwargs):
+    random_matches = cache.get('random_matches')
+    if random_matches:
+        cache.delete('random_matches')
+
+
 @receiver([post_save, post_delete], sender=Leagues)
 def leagues_model_cache(sender, instance, **kwargs):
     all_leagues_query = cache.get('all_leagues_query')

@@ -11,8 +11,7 @@ Watch out for api quota usage
 """
 
 
-# class FuncResponseDataTest(TestCase):
-class FuncResponseDataTest():
+class FuncResponseDataTest(TestCase):
     def test_leagues_request(self):
         data = None
         try:
