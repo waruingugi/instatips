@@ -4,12 +4,6 @@ import json
 from django.core.cache import cache
 from .test_data import fixture_id_443_events_data as fixture_events_data
 
-# To list the test successes as well as failures:
-# >> python manage.py test --verbosity 2
-# Test coverage
-# >> coverage run --source='.' manage.py test core
-# >> coverage report
-
 
 # Create tests here
 class MatchModelTest(TestCase):

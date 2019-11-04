@@ -3,7 +3,8 @@ from core.models import Countries, Leagues, Match
 from datetime import datetime, timedelta
 from core.tasks import (
     countries, leagues, live_matches,
-    today_matches, tomorrow_matches
+    today_matches, tomorrow_matches,
+    day_after_tomorrow_matches
 )
 
 
@@ -42,7 +43,19 @@ class TaskTest(TestCase):
 
     def test_live_matches_task(self):
         live_matches()
-        self.assertNotEqual(
-            Match.objects.all().count(),
-            0
-        )
+        match = Match.objects.first()
+        if match:
+            self.assertNotEqual(
+                match.elapsed,
+                0
+            )
+
+    def test_day_after_tomorrow_matches_task(self):
+        day_after_tomorrow_matches()
+        match = Match.objects.first()
+        if match:
+            day_after_tomorrow = datetime.now() + timedelta(2)
+            self.assertEquals(
+                match.event_timestamp.strftime('%Y-%m-%d'),
+                day_after_tomorrow.strftime('%Y-%m-%d')
+            )

@@ -1,16 +1,3 @@
-# Commands related to celery
-# $src/redis-server
-# $src/redis-cli ping (This command should return pong)
-# $celery -A instatips worker -l info
-# $celery -A instatips beat -l info
-# $python manage.py shell
-# >> from django_celery_beat.models import PeriodicTask
-# >> PeriodicTask.objects.update(last_run_at=None)
-# $python manage.py migrate
-
-# After creating cache
-# >> python manage.py createcachetable
-
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
@@ -59,12 +46,12 @@ app.conf.beat_schedule = {
     },
     # name of the scheduler
 
-    "get-today-matches-from-api-every-two-hours": {
+    "get-today-matches-from-api-every-seventeen-minutes": {
         # task name which we have created in tasks.py
         'task': 'get_today_matches_from_api',
 
         # execute every two hours
-        'schedule': crontab(minute=0, hour='*/2')
+        'schedule': crontab(minute='*/17')
     },
     # name of the scheduler
 
