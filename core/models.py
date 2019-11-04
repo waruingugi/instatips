@@ -10,16 +10,6 @@ from django.utils.timezone import make_aware
 from django.urls import reverse
 
 
-# Start server using commands:
-# >> sudo service postgresql start
-# >> sudo -u postgres psql
-# Other commands are:
-# >> ALTER USER instatips_admin CREATEDB;
-
-# >>> from django.db import connection
-# >>> connection.queries
-
-
 # Create your models here.
 class Match(models.Model):
     objects = CustomManager()

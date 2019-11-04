@@ -1,4 +1,4 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.views import generic
 from core.models import Match, Leagues
 from django.core.cache import cache
@@ -186,17 +186,18 @@ class HighlightsListView(generic.ListView):
         ) - timedelta(hours=10)
 
         random_matches = cache.get('random_matches')
+        cache.delete('random_matches')
 
         if random_matches is None:
             current_leagues = all_leagues.filter(
                     Q(season_end__gte=yesterday_start)
                 )
-            random_leagues = ['Champions League', 'Premier League']
+            random_leagues = ['Premier League', 'EFL Trophy', 'Championship']
             league_ids = []
 
             for league in current_leagues:
                 if league.name in random_leagues:
-                    league_ids.append(league.id)
+                    league_ids.append(league.league_id)
 
             random_matches = all_matches.filter(
                     Q(event_timestamp__gte=yesterday_start) & Q(league_id__in=league_ids)

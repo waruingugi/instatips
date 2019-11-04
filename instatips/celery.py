@@ -37,12 +37,12 @@ app.conf.beat_schedule = {
     },
     # name of the scheduler
 
-    'get-leagues-from-api-at-midnight': {
+    'get-leagues-from-api-every-sunday': {
         # task name which we have created in tasks.py
         'task': 'get_leagues_from_api',
 
         # execute each day at midnight
-        'schedule': crontab(minute=0, hour=0)
+        'schedule': crontab(day_of_week='Sunday')
     },
     # name of the scheduler
 
@@ -53,6 +53,8 @@ app.conf.beat_schedule = {
         # execute every two hours
         'schedule': crontab(minute='*/17')
     },
+    # Reserved for version 2.0 for project
+    """
     # name of the scheduler
 
     "get-live-matches-from-api-every-two-mins": {
@@ -62,6 +64,7 @@ app.conf.beat_schedule = {
         # execute every two mins
         'schedule': crontab(minute='*/2')
     },
+    """
     # name of the scheduler
 
     "get-tomorrow-matches-from-api-at-midnight": {

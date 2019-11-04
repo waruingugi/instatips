@@ -23,3 +23,12 @@
 # >> cat /tmp/debug.log
 # To delete all content in debug.log
 # >> :'%d'
+
+# Start server using commands:
+# >> sudo service postgresql start
+# >> sudo -u postgres psql
+# Other commands are:
+# >> ALTER USER instatips_admin CREATEDB;
+
+# >>> from django.db import connection
+# >>> connection.queries
