@@ -3,6 +3,12 @@ import requests
 import json  # noqa
 from core import settings as core_settings
 
+# Initiate logging
+import logging
+from core import core_logger  # noqa
+# This retrieves a Python logging instance (or creates it)
+logger = logging.getLogger(__name__)
+
 
 def is_server_error(error):
     retry_again = False
@@ -28,4 +34,5 @@ def response_data(
         headers=new_headers,
         params=new_params
     )
+    logger.info("Fetched data from api: " + url)
     return response

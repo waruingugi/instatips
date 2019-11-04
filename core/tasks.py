@@ -5,6 +5,12 @@ from core import settings as core_settings
 from core.func_response_data import response_data
 from datetime import datetime, timedelta
 
+# Initiate logging
+import logging
+from core import core_logger  # noqa
+# This retrieves a Python logging instance (or creates it)
+logger = logging.getLogger(__name__)
+
 
 @shared_task(name="get_countries_from_api")
 def countries():
@@ -13,7 +19,7 @@ def countries():
         data = response_data(url_path=core_settings.COUNTRIES_URL).json()
     except Exception:
         """Should implement django logging here."""
-        print("An error occurred in countries task!!")
+        logger.critical("An error occurred in get_countries_from_api task")
     else:
         existing_countries_list = Countries.objects.values_list('country', flat=True)
 
@@ -43,7 +49,7 @@ def leagues():
         data = response_data(url_path=core_settings.LEAGUES_URL).json()
     except Exception:
         """Should implement django logging here."""
-        print("An error occurred in leagues task!!")
+        logger.critical("An error occurred in get_leagues_from_api task")
     else:
         # Those already existing in League model
         existing_leagues = Leagues.objects.values_list('league_id', flat=True)
@@ -82,7 +88,7 @@ def today_matches():
         data = response_data(url_path=core_settings.FIXTURE_DATE_URL + today).json()
     except Exception:
         """Should implement django logging here."""
-        print("An error occurred in today matches task!!")
+        logger.critical("An error occurred in get_today_matches_from_api task")
     else:
         matches_list = Match.objects.values_list('fixture_id', flat=True)
         fixtures = data['api']['fixtures']
@@ -146,7 +152,7 @@ def live_matches():
         data = response_data(url_path=core_settings.LIVE_FIXTURES_URL).json()
     except Exception:
         """Should implement django logging here."""
-        print("An error occurred in live matches task!!")
+        logger.critical("An error occurred in get_live_matches_from_api task")
     else:
         fixtures = data['api']['fixtures']
         matches_list = Match.objects.values_list('fixture_id', flat=True)
@@ -176,7 +182,7 @@ def live_matches():
                     data = response_data(url_path=core_settings.FIXTURE_URL + fixture['fixture_id']).json()
                 except Exception:
                     """Should implement django logging here."""
-                    print("An error occurred in CASE 1 live matches task!!")
+                    logger.critical("An error occurred in CASE 1 get_live_matches_from_api task")
                 else:
                     live_fixture = data['api']['fixtures'][0]
 
@@ -248,7 +254,7 @@ def live_matches():
                 data = response_data(url_path=core_settings.FIXTURE_URL + fixture['fixture_id']).json()
             except Exception:
                 """Should implement django logging here."""
-                print("An error occurred in CASE 3 live matches task!!")
+                logger.critical("An error occurred in CASE 3 get_live_matches_from_api task")
             else:
                 live_fixture = data['api']['fixtures'][0]
                 detailed_new_matches_list.append(live_fixture)
@@ -317,7 +323,7 @@ def tomorrow_matches():
         data = response_data(url_path=core_settings.FIXTURE_DATE_URL + tomorrow).json()
     except Exception:
         """Should implement django logging here."""
-        print("An error occurred in today matches task!!")
+        logger.critical("An error occurred in get_tomorrow_matches_from_api task")
     else:
         matches_list = Match.objects.values_list('fixture_id', flat=True)
         fixtures = data['api']['fixtures']
@@ -383,7 +389,7 @@ def day_after_tomorrow_matches():
         data = response_data(url_path=core_settings.FIXTURE_DATE_URL + tomorrow).json()
     except Exception:
         """Should implement django logging here."""
-        print("An error occurred in today matches task!!")
+        logger.critical("An error occurred in get_day_after_tomorrow_matches_from_api task")
     else:
         matches_list = Match.objects.values_list('fixture_id', flat=True)
         fixtures = data['api']['fixtures']

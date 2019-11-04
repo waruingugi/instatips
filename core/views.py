@@ -8,6 +8,13 @@ from core import settings as core_settings
 from django.db.models import Q
 
 
+# Initiate logging
+import logging
+from core import core_logger # noqa
+# This retrieves a Python logging instance (or creates it)
+logger = logging.getLogger(__name__)
+
+
 # Create your views here.
 class TodayListView(generic.ListView):
     model = Match
@@ -195,7 +202,8 @@ class HighlightsListView(generic.ListView):
                     Q(event_timestamp__gte=yesterday_start) & Q(league_id__in=league_ids)
                 )
             cache.set('random_matches', random_matches)
-        
+            logger.info("Set Random Matches Cache")
+
         upcoming_matches = []
         finished_matches = []
 
@@ -207,4 +215,4 @@ class HighlightsListView(generic.ListView):
 
         ordered_matches = upcoming_matches + finished_matches
 
-        return random_matches
+        return ordered_matches
