@@ -25,8 +25,8 @@ logging.config.dictConfig({
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'formatter': os.path.join(BASE_DIR, 'debug.log'),
-            'filename': 'debug.log'
+            'formatter': 'file',
+            'filename': os.path.join(BASE_DIR, 'debug.log')
         }
     },
     'loggers': {
