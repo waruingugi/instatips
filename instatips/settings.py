@@ -128,8 +128,8 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -138,7 +138,7 @@ CELERY_TIMEZONE = "Africa/Nairobi"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": os.getenv('CACHE_LOCATION'),
+        "LOCATION": 'redis://localhost:6379',
         "TIMEOUT": 7200,  # SET TO TWO HOURS: LONGEST CONTRAB TASK
         "OPTIONS": {
             "MAX_ENTRIES": 10,
