@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [os.getenv('HOST_ONE'), '192.168.43.196']
+ALLOWED_HOSTS = [os.getenv('HOST_ONE')]
 
 # Application definition
 
@@ -128,16 +128,12 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 # CELERY SETTINGS
-CELERY_BROKER_URL = 'redis://h:pacf5256a9b0f5651916378519463722929e00d34eb337184482e232e6a67b688@ec2-18-207-22-115.compute-1.amazonaws.com:10609'
-CELERY_RESULT_BACKEND = 'redis://h:pacf5256a9b0f5651916378519463722929e00d34eb337184482e232e6a67b688@ec2-18-207-22-115.compute-1.amazonaws.com:10609'
+CELERY_BROKER_URL = os.getenv('REDIS_URL')
+CELERY_RESULT_BACKEND = os.getenv('REDIS_URL')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = "Africa/Nairobi"
-
-import os
-import urllib.parse
-import json
 
 CACHES = {
     'default': {
@@ -166,8 +162,6 @@ STATICFILES_DIRS = [
 ]
 
 # SETTINGS FOR HEROKU
-
-
 #  Add configuration for static files storage using whitenoise
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
