@@ -138,7 +138,7 @@ CELERY_TIMEZONE = "Africa/Nairobi"
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
-        "LOCATION": 'cache_table',
+        "LOCATION": 'redis://h:pacf5256a9b0f5651916378519463722929e00d34eb337184482e232e6a67b688@ec2-18-207-22-115.compute-1.amazonaws.com:10609',
         "TIMEOUT": 7200,  # SET TO TWO HOURS: LONGEST CONTRAB TASK
         "OPTIONS": {
             "MAX_ENTRIES": 10,
