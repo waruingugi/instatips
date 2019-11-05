@@ -30,3 +30,5 @@ tenacity==5.1.1
 urllib3==1.22
 virtualenv==16.6.0
 whitenoise==4.1.4
+python-binary-memcached
+django-bmemcached
