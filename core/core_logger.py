@@ -15,18 +15,12 @@ logging.config.dictConfig({
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'console'
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'file',
-            'filename': '/debug.log'
         }
     },
     'loggers': {
         '': {
             'level': 'DEBUG',
-            'handlers': ['console', 'file']
+            'handlers': ['console']
         }
     }
 })
