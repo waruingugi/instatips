@@ -141,12 +141,7 @@ import json  # noqa
 CACHES = {
     "default": {
         'BACKEND': 'django_bmemcached.memcached.BMemcached',
-        'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
-        "TIMEOUT": 7200,  # SET TO TWO HOURS: LONGEST CONTRAB TASK
-        "OPTIONS": {
-            "MAX_ENTRIES": 10,
-            "CULL_FREQUENCY": 6,
-        }
+        'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(',')
     }
 }
 
