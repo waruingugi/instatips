@@ -1,0 +1,1 @@
+web: gunicorn instatips.wsgi --log-file -
