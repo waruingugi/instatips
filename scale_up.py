@@ -4,7 +4,7 @@ import json
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from config import APP, KEY, PROCESS, PROCESS_WORKER
+from config import APP, KEY, PROCESS, PROCESS_WORKER, PROCESS_BEAT
 sched = BlockingScheduler()
 
 # Generate Base64 encoded API Key
@@ -32,8 +32,8 @@ if result.status_code == 200:
 else:
     print("Failure in scaling up web app!")
 
-# Then scale down the worker
-worker_size = 0
+# Then scale up the worker
+worker_size = 1
 result = None
 
 payload = {'quantity': worker_size}
@@ -42,8 +42,24 @@ url = "https://api.heroku.com/apps/" + APP + "/formation/" + PROCESS_WORKER
 try:
     result = requests.patch(url, headers=HEADERS, data=json_payload)
 except:  # noqa
-    print("Error ocurred in scaling down worker")
+    print("Error ocurred in scaling up worker")
 if result.status_code == 200:
-    print("Success in scaling down worker!")
+    print("Success in scaling up worker!")
 else:
-    print("Failure in scaling down worker")
+    print("Failure in scaling up worker")
+
+# Scale up the beat
+beat_size = 1
+result = None
+
+payload = {'quantity': beat_size}
+json_payload = json.dumps(payload)
+url = "https://api.heroku.com/apps/" + APP + "/formation/" + PROCESS_BEAT
+try:
+    result = requests.patch(url, headers=HEADERS, data=json_payload)
+except:  # noqa
+    print("Error ocurred in scaling up beat")
+if result.status_code == 200:
+    print("Success in scaling up beat!")
+else:
+    print("Failure in scaling up beat")
