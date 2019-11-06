@@ -4,6 +4,8 @@
 
 # >> celery -A instatips worker -l info
 # >> celery -A instatips beat -l info
+# >>  heroku ps:scale web=1 worker=1 beat=1 
+# >> heroku logs -t -p worker
 
 # >> python manage.py shell
 # >> from django_celery_beat.models import PeriodicTask
