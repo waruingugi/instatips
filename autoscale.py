@@ -32,7 +32,7 @@ def scale(size):
 
 @sched.scheduled_job('interval', minutes=1)
 def job():
-    print 'Scaling ...'
+    print ('Scaling ...')
     print scale(0)
 
 
