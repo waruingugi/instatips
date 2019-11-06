@@ -188,11 +188,12 @@ class HighlightsListView(generic.ListView):
         random_matches = cache.get('random_matches')
         cache.delete('random_matches')
 
+        """Select random matches and return as highlighted matches."""
         if random_matches is None:
             current_leagues = all_leagues.filter(
                     Q(season_end__gte=yesterday_start)
                 )
-            random_leagues = ['Premier League', 'EFL Trophy', 'Championship']
+            random_leagues = ['Premier League', 'EFL Trophy', 'Championship', 'Champions League']
             league_ids = []
 
             for league in current_leagues:
