@@ -5,9 +5,11 @@ import json
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from config import APP, KEY, PROCESS
+sched = BlockingScheduler()
 
 # Generate Base64 encoded API Key
-BASEKEY = base64.b64encode(":" + KEY)
+BASEKEY = base64.b64encode(KEY.encode())
+
 # Create headers for API call
 HEADERS = {
     "Accept": "application/vnd.heroku+json; version=3",
