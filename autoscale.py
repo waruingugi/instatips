@@ -47,7 +47,7 @@ def worker_scale(size):
         return "Failure in scaling"
 
 
-@sched.scheduled_job('interval', minutes=17)
+@sched.scheduled_job('interval', minutes=1)
 def scale_down():
     """Scale web app to 0 and scale worker to 1"""
     print('Scaling Web app down...')
@@ -55,7 +55,7 @@ def scale_down():
     print(worker_scale(1))
 
 
-@sched.scheduled_job('interval', minutes=19)
+@sched.scheduled_job('interval', minutes=2)
 def scale_up():
     print('Scaling Web app up...')
     print(web_scale(1))
