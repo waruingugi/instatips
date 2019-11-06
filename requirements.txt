@@ -32,3 +32,4 @@ virtualenv==16.6.0
 python-binary-memcached
 django-bmemcached
 whitenoise==3.3.1
+apscheduler==3.0.1
