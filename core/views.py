@@ -29,6 +29,7 @@ class TodayListView(generic.ListView):
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
+            logger.info("Set all_matches_queryCache For TodayList View")
 
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
@@ -75,6 +76,7 @@ class TomorrowListView(generic.ListView):
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
+            logger.info("Set all_matches_query Cache For TomorrowList View")
 
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
@@ -99,6 +101,7 @@ class YesterdayListView(generic.ListView):
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
+            logger.info("Set all_matches_query Cache For YesterdayList View")
 
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
@@ -123,6 +126,7 @@ class LiveListView(generic.ListView):
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
+            logger.info("Set all_matches_query Cache For LiveList View")
 
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
@@ -153,6 +157,7 @@ class LeagueListView(generic.ListView):
         if all_leagues is None:
             all_leagues = Leagues.objects.all()
             cache.set('all_leagues_query', all_leagues)
+            logger.info("Set all_leagues_query Cache For LeagueList View")
 
         return all_leagues
 
@@ -171,10 +176,12 @@ class HighlightsListView(generic.ListView):
         if all_leagues is None:
             all_leagues = Leagues.objects.all()
             cache.set('all_leagues_query', all_leagues)
+            logger.info("Set all_leagues_query Cache For Highlights View")
 
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
+            logger.info("Set all_matches_query Cache For Highlights View")
 
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
@@ -204,7 +211,7 @@ class HighlightsListView(generic.ListView):
                     Q(event_timestamp__gte=yesterday_start) & Q(league_id__in=league_ids)
                 )
             cache.set('random_matches', random_matches)
-            logger.info("Set Random Matches Cache")
+            logger.info("Set random_matches Cache For Highlights View")
 
         upcoming_matches = []
         finished_matches = []
