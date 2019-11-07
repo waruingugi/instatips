@@ -193,7 +193,6 @@ class HighlightsListView(generic.ListView):
         ) - timedelta(hours=16)
 
         random_matches = cache.get('random_matches')
-        cache.delete('random_matches')
 
         """Select random matches and return as highlighted matches."""
         if random_matches is None:
