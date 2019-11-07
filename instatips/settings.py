@@ -136,13 +136,14 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = "Africa/Nairobi"
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django_bmemcached.memcached.BMemcached',
-        'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS').split(','),
-        'OPTIONS': {
-                    'username': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
-                    'password': os.environ.get('MEMCACHEDCLOUD_PASSWORD')
-            }
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+        "TIMEOUT": 7200,  # SET TO TWO HOURS: LONGEST CONTRAB TASK
+        "OPTIONS": {
+            "MAX_ENTRIES": 10,
+            "CULL_FREQUENCY": 6,
+        }
     }
 }
 
