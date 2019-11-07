@@ -11,6 +11,9 @@ env/
 *.pyc
 __pycache__
 
-#celery
+# celery
 celerybeat-schedule
 celerybeat.pid
+
+# Zipped files
+*.gz

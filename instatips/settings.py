@@ -135,11 +135,15 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = "Africa/Nairobi"
 
-#DataFlair #Memcached
 CACHES = {
-    'default':{
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1;11211',
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+        "TIMEOUT": 7200,  # SET TO TWO HOURS: LONGEST CONTRAB TASK
+        "OPTIONS": {
+            "MAX_ENTRIES": 10,
+            "CULL_FREQUENCY": 6,
+        }
     }
 }
 
