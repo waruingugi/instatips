@@ -29,7 +29,7 @@ class TodayListView(generic.ListView):
         if all_matches is None:
             all_matches = Match.objects.all()
             cache.set('all_matches_query', all_matches)
-            logger.info("Set all_matches_queryCache For TodayList View")
+            logger.info("Set all_matches_query Cache For TodayList View")
 
         timezone = pytz.timezone(core_settings.timezone)
         dt_now = datetime.now(timezone)
@@ -200,7 +200,7 @@ class HighlightsListView(generic.ListView):
             current_leagues = all_leagues.filter(
                     Q(season_end__gte=yesterday_start)
                 )
-            random_leagues = ['Premier League', 'EFL Trophy', 'Championship', 'Champions League']
+            random_leagues = ['Premier League', 'EFL Trophy', 'Championship']
             league_ids = []
 
             for league in current_leagues:
