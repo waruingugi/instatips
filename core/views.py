@@ -180,10 +180,10 @@ class HighlightsListView(generic.ListView):
         dt_now = datetime.now(timezone)
         yesterday_start = datetime(dt_now.year, dt_now.month, dt_now.day, tzinfo=timezone) - timedelta(1)
 
-        dt_ten_hrs_ago = datetime(
+        dt_sixteen_hrs_ago = datetime(
             dt_now.year, dt_now.month, dt_now.day,
             dt_now.hour, dt_now.minute
-        ) - timedelta(hours=10)
+        ) - timedelta(hours=16)
 
         random_matches = cache.get('random_matches')
         cache.delete('random_matches')
@@ -210,7 +210,7 @@ class HighlightsListView(generic.ListView):
         finished_matches = []
 
         for match in random_matches:
-            if match.event_timestamp > dt_ten_hrs_ago:
+            if match.event_timestamp > dt_sixteen_hrs_ago:
                 upcoming_matches.append(match)
             else:
                 finished_matches.append(match)
