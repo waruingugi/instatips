@@ -26,26 +26,11 @@ def debug_task(self):
 
 
 app.conf.beat_schedule = {
+    # After a bug that caused us to incur more charges,
+    # we removed the commented tasks reserved for version 2.0
+
     # name of the scheduler
-
-    'get-countries-from-api-once-a-month': {
-        # task name which we have created in tasks.py
-        'task': 'get_countries_from_api',
-
-        # execute on the first day of each month
-        'schedule': crontab(0, 0, day_of_month='1')
-    },
-    # name of the scheduler
-
-    'get-leagues-from-api-every-sunday': {
-        # task name which we have created in tasks.py
-        'task': 'get_leagues_from_api',
-
-        # execute each day at midnight
-        'schedule': crontab(day_of_week='Sunday')
-    },
-    # name of the scheduler
-
+    
     "get-today-matches-from-api-every-seventeen-minutes": {
         # task name which we have created in tasks.py
         'task': 'get_today_matches_from_api',
@@ -53,18 +38,6 @@ app.conf.beat_schedule = {
         # execute every two hours
         'schedule': crontab(minute='*/17')
     },
-    # Reserved for version 2.0 for project
-    """
-    # name of the scheduler
-
-    "get-live-matches-from-api-every-two-mins": {
-        # task name which we have created in tasks.py
-        'task': 'get_live_matches_from_api',
-
-        # execute every two mins
-        'schedule': crontab(minute='*/2')
-    },
-    """
     # name of the scheduler
 
     "get-tomorrow-matches-from-api-at-midnight": {
